@@ -4,18 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Intent Classification</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="../static/styles.css">
 </head>
 <body>
     <div class="container">
         <div id="chat-window">
             <div id="chat-output">
-                {% if user_input %}
-                    <p><strong>You:</strong> {{ user_input }}</p>
-                {% endif %}
-                {% if final_intent %}
-                    <p><strong>Niyet:</strong> {{ final_intent }}</p>
-                {% endif %}
+                {% for message, intent in chat_history %}
+                    <p><strong>You:</strong> {{ message }}</p>
+                    {% if intent %}
+                        <p><strong>Niyet:</strong> {{ intent }}</p>
+                    {% endif %}
+                {% endfor %}
             </div>
         </div>
         <form action="/process_text" method="POST">

@@ -3,7 +3,8 @@ from spacy.matcher import Matcher
 import pandas as pd
 from fuzzywuzzy import fuzz
 
-def run():
+
+def process_user_input(user_input):
     # Excel dosyasını oku
     df = pd.read_excel('/Users/hakanmartin/PycharmProjects/pythonProject1/Niyet-Pattern.xlsx')
 
@@ -17,50 +18,43 @@ def run():
         for pattern in patterns:
             matcher.add(intent, [[{"LOWER": word.lower()} for word in pattern.split()]])  # Pattern'i Matcher'a ekle
 
-    while True:
-        final_intent = "-1"  # Başlangıçta varsayılan olarak "Niyet bulunamadı"
+    final_intent = "-1"  # Başlangıçta varsayılan olarak "Niyet bulunamadı"
 
-        user_input = input("Metin: ")
+    doc = nlp(user_input)
 
-        if user_input.lower() == 'q':
-            break  # 'q' girilirse döngüden çık
+    matches = matcher(doc)
 
-        doc = nlp(user_input)
+    if matches:
+        detected_intents = set()
+        for match_id, start, end in matches:
+            detected_intents.add(nlp.vocab.strings[match_id])
+        final_intent = '#'.join(detected_intents)
+    elif final_intent == "-1":  # Eğer daha önce bir niyet bulunmamışsa
+        highest_similarity = 0.7
+        best_match_intent = None
 
-        matches = matcher(doc)
+        # FuzzyWuzzy ile benzerlik kontrolü
+        for token in doc:
+            for col in df.columns:
+                patterns = df[col].dropna().tolist()
+                for pattern in patterns:
+                    similarity_ratio = fuzz.ratio(token.lower_, pattern.lower())
+                    if similarity_ratio > highest_similarity:
+                        highest_similarity = similarity_ratio
+                        best_match_intent = col
 
-        if matches:
-            detected_intents = set()
-            for match_id, start, end in matches:
-                detected_intents.add(nlp.vocab.strings[match_id])
-            final_intent = '#'.join(detected_intents)
+        if best_match_intent:
+            final_intent = best_match_intent
         elif final_intent == "-1":  # Eğer daha önce bir niyet bulunmamışsa
-            highest_similarity = 0.7
-            best_match_intent = None
+            found_time_entity = any(token.ent_type_ == "TIME" for token in doc)
+            found_city_entity = any(token.ent_type_ == "GPE" for token in doc)
 
-            # FuzzyWuzzy ile benzerlik kontrolü
-            for token in doc:
-                for col in df.columns:
-                    patterns = df[col].dropna().tolist()
-                    for pattern in patterns:
-                        similarity_ratio = fuzz.ratio(token.lower_, pattern.lower())
-                        if similarity_ratio > highest_similarity:
-                            highest_similarity = similarity_ratio
-                            best_match_intent = col
+            if found_time_entity:
+                final_intent = "atis_flight_time"
+            elif found_city_entity:
+                final_intent = "atis_city"
 
-            if best_match_intent:
-                final_intent = best_match_intent
-            elif final_intent == "-1":  # Eğer daha önce bir niyet bulunmamışsa
-                found_time_entity = any(token.ent_type_ == "TIME" for token in doc)
-                found_city_entity = any(token.ent_type_ == "GPE" for token in doc)
-
-                if found_time_entity:
-                    final_intent = "atis_flight_time"
-                elif found_city_entity:
-                    final_intent = "atis_city"
-
-        print(f"Niyet: {final_intent}")
-        print()
+    return final_intent
 
 if __name__ == '__main__':
-    run()
+    process_user_input()
