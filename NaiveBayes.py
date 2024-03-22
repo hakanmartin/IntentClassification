@@ -1,7 +1,6 @@
 import pandas as pd
 from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.svm import SVC
-
+from sklearn.naive_bayes import MultinomialNB
 
 veri_seti = pd.read_excel('/Users/hakanmartin/PycharmProjects/pythonProject1/Proje1.2VeriSetiEn _TR.xlsx')
 
@@ -13,8 +12,8 @@ tfidf_vectors = tfidf_vectorizer.fit_transform(metinler)
 X = tfidf_vectors
 y = veri_seti['INTENT']
 
-svm_model = SVC(kernel='linear')
-svm_model.fit(X, y)
+nb_model = MultinomialNB()
+nb_model.fit(X, y)
 
 while True:
     user_input = input("Metin: ")
@@ -24,5 +23,9 @@ while True:
 
     transformed_input = tfidf_vectorizer.transform([user_input])
 
-    predicted_intent = svm_model.predict(transformed_input)
-    print(f"Niyet Tahmini (SVM): {predicted_intent[0]}")
+    predicted_intent = nb_model.predict(transformed_input)
+
+    if predicted_intent[0] in veri_seti['INTENT'].unique():
+        print(f"Niyet Tahmini (Naive Bayes): {predicted_intent[0]}")
+    else:
+        print("Niyet bulunamadı.")
