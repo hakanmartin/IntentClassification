@@ -2,7 +2,7 @@ import pandas as pd
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.naive_bayes import MultinomialNB
 
-veri_seti = pd.read_excel('/Users/hakanmartin/PycharmProjects/pythonProject1/Proje1.2VeriSetiEn _TR.xlsx')
+veri_seti = pd.read_excel('/Users/hakanmartin/PycharmProjects/pythonProject1/ProjeVeriSetiEn_TR.xlsx')
 
 metinler = veri_seti['TR'].values.astype('U')
 
@@ -16,8 +16,8 @@ nb_model = MultinomialNB()
 nb_model.fit(X, y)
 
 while True:
-    user_input = input("Metin: ")
 
+    user_input = input("Metin: ")
     if user_input.lower() == 'q':
         break
 

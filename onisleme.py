@@ -4,7 +4,7 @@ import spacy
 nlp = spacy.load("tr_core_news_md")
 
 # Metni işle
-text = "saat 6' dan sonra baltimore' a tüm uçuşlar"
+text = "Bana Boston'dan Ankara'ya uçuşlari gösteri̇n."
 doc = nlp(text)
 
 # Tokenization
