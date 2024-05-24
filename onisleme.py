@@ -1,4 +1,4 @@
-import spacy
+import spacy  # type: ignore
 
 # Türkçe modelini yükle
 nlp = spacy.load("tr_core_news_md")

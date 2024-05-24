@@ -1,9 +1,15 @@
-import pandas as pd
-from tqdm import tqdm
-from nltk import word_tokenize, pos_tag, ne_chunk
+import pandas as pd  # type: ignore
+from tqdm import tqdm  # type: ignore
+from nltk import word_tokenize, pos_tag, ne_chunk  # type: ignore
+import nltk
+nltk.download('punkt')
+nltk.download('averaged_perceptron_tagger')
+nltk.download('maxent_ne_chunker')
+nltk.download('words')
+
 
 try:
-    df = pd.read_excel('/Users/hakanmartin/PycharmProjects/pythonProject1/Test-1000-2.xlsx')
+    df = pd.read_excel('/Users/haticeguler/Desktop/IntentClassification/Test-1000.xlsx')
 except FileNotFoundError:
     print("Dosya bulunamadı!")
     exit()
@@ -36,7 +42,7 @@ for index, text in enumerate(df['TR']):
 pbar.close()
 
 # Sonucu yeni bir Excel dosyasına yazma
-df.to_excel('/Users/hakanmartin/PycharmProjects/pythonProject1/Test-1000-2.xlsx', index=False)
+df.to_excel('/Users/haticeguler/Desktop/IntentClassification/Test-1000.xlsx', index=False)
 print("Varlık tanıması tamamlandı ve kaydedildi.")
 
 

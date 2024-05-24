@@ -5,7 +5,7 @@ from sklearn.svm import SVC
 from sklearn.metrics import accuracy_score, classification_report
 
 # Excel dosyasını oku ve bir DataFrame'e yükle
-veri_seti = pd.read_excel('/Users/hakanmartin/PycharmProjects/pythonProject1/ProjeVeriSetiEn_TR.xlsx')
+veri_seti = pd.read_excel('/Users/haticeguler/Desktop/IntentClassification/ProjeVeriSetiEn_TR.xlsx')
 
 metinler = veri_seti['TR'].values.astype('U')
 

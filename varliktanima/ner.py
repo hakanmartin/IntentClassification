@@ -1,6 +1,6 @@
 import pandas as pd
 import spacy
-import numpy as np
+import numpy as np # type: ignore
 from tqdm import tqdm
 
 # Türkçe modelini yükle
@@ -8,7 +8,7 @@ nlp = spacy.load("tr_core_news_md")
 
 # Veriyi oku
 try:
-    df = pd.read_excel('/Users/hakanmartin/PycharmProjects/pythonProject1/Test-1000-3.xlsx')
+    df = pd.read_excel('/Users/haticeguler/Desktop/IntentClassification/Test-1000.xlsx')
 except FileNotFoundError:
     print("Dosya bulunamadı!")
     exit()
@@ -33,7 +33,7 @@ for index, text in enumerate(df['TR']):
 pbar.close()
 
 # Sonucu yeni bir Excel dosyasına yaz
-df.to_excel('/Users/hakanmartin/PycharmProjects/pythonProject1/Test-1000-3.xlsx', index=False)
+df.to_excel('/Users/haticeguler/Desktop/IntentClassification/Test-1000.xlsx', index=False)
 print("Varlık tanıması tamamlandı ve sonuçlar kaydedildi.")
 
 
