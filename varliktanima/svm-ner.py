@@ -54,6 +54,6 @@ print(f"Model Doğruluğu: {accuracy}")
 print(classification_report(y_test, y_pred, zero_division=1))
 
 # Tahmin edilen sonuçları veri setine ekleme ve kaydetme
-test_veri_seti['PREDICTED_INTENT'] = y_pred
-test_veri_seti.to_excel('/Users/haticeguler/Desktop/IntentClassification/Test-1000-4.xlsx', index=False)
-print("Tahminler sonuçlar dosyasına kaydedildi.")
+#test_veri_seti['PREDICTED_INTENT'] = y_pred
+#test_veri_seti.to_excel('/Users/haticeguler/Desktop/IntentClassification/Test-1000-4.xlsx', index=False)
+#print("Tahminler sonuçlar dosyasına kaydedildi.")

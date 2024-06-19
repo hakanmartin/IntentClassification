@@ -8,7 +8,7 @@ nlp = spacy.load("tr_core_news_md")
 
 # Veriyi oku
 try:
-    df = pd.read_excel('/Users/haticeguler/Desktop/IntentClassification/Test-1000-4.xlsx')
+    df = pd.read_excel('/Users/hakanmartin/PycharmProjects/pythonProject1/Test3-1000.xlsx')
 except FileNotFoundError:
     print("Dosya bulunamadı!")
     exit()
@@ -33,6 +33,6 @@ for index, text in enumerate(df['TR']):
 pbar.close()
 
 # Sonucu yeni bir Excel dosyasına yaz
-df.to_excel('/Users/haticeguler/Desktop/IntentClassification/Test-1000-4.xlsx', index=False)
+df.to_excel('/Users/hakanmartin/PycharmProjects/pythonProject1/Test3-1000.xlsx', index=False)
 print("Varlık tanıması tamamlandı ve sonuçlar kaydedildi.")
 # spacy ile varlik tanimlama

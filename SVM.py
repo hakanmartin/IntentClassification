@@ -3,7 +3,7 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.svm import SVC
 
 # Veriyi okuyun ve modeli eğitin
-veri_seti = pd.read_excel('/Users/haticeguler/Desktop/IntentClassification/ProjeVeriSetiEn_TR.xlsx')
+veri_seti = pd.read_excel('/Users/hakanmartin/PycharmProjects/pythonProject1/ProjeVeriSetiEn_TR.xlsx')
 metinler = veri_seti['TR'].values.astype('U')
 tfidf_vectorizer = TfidfVectorizer()
 tfidf_vectors = tfidf_vectorizer.fit_transform(metinler)

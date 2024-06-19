@@ -4,7 +4,7 @@ import pandas as pd
 from fuzzywuzzy import fuzz
 
 # Excel dosyasını oku
-df = pd.read_excel('/Users/hakanmartin/PycharmProjects/pythonProject1/Niyet-Pattern.xlsx')
+df = pd.read_excel('/Users/hakanmartin/PycharmProjects/pythonProject1/1Donem/Niyet-Pattern.xlsx')
 
 nlp = spacy.load("tr_core_news_md")
 matcher = Matcher(nlp.vocab)
@@ -23,6 +23,8 @@ while True:
     if user_input.lower() == 'q':
         break  # 'q' girilirse döngüden çık
 
+    final_intent = "-1"  # Başlangıçta varsayılan olarak "Niyet bulunamadı"
+
     # Giriş metnini analiz et
     doc = nlp(user_input)
 
@@ -33,13 +35,13 @@ while True:
         detected_intents = set()
         for match_id, start, end in matches:
             detected_intents.add(nlp.vocab.strings[match_id])
-        print("Niyet:", '#'.join(detected_intents))
-        print()
+        final_intent = '#'.join(detected_intents)
     else:
         highest_similarity = 0.7
         best_match_intent = None
+
+        # FuzzyWuzzy ile benzerlik kontrolü
         for token in doc:
-            # Her bir token için patternlerle karşılaştırma
             for col in df.columns:
                 patterns = df[col].dropna().tolist()
                 for pattern in patterns:
@@ -49,8 +51,15 @@ while True:
                         best_match_intent = col
 
         if best_match_intent:
-            print(f"Yakın eşleşme bulundu. Niyet: {best_match_intent}")
-            print()
+            final_intent = best_match_intent
         else:
-            print("Niyet: Niyet bulunamadı :(")
-            print()
+            found_time_entity = any(token.ent_type_ == "TIME" for token in doc)
+            found_city_entity = any(token.ent_type_ == "GPE" for token in doc)
+
+            if found_time_entity:
+                final_intent = "atis_flight_time"
+            elif found_city_entity:
+                final_intent = "atis_city"
+
+    print(f"Niyet: {final_intent}")
+    print()

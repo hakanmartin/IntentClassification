@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request
-from niyettespiti4 import process_user_input
+#from niyettespiti4 import process_user_input
 from SVM import process_user_input_svm
 
 app = Flask(__name__)
